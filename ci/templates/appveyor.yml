@@ -6,19 +6,16 @@ environment:
     - TESTENV: 'check'
       PYTHON_VERSION: '3.7'
       MINICONDA_HOME: 'C:\Miniconda'
-      TESTSCRIPT: 'python setup.py check --strict --metadata --restructuredtext && check-manifest && flake8 src tests'
       INSTALL_EXTRA_DEPS: 'pip install docutils check-manifest flake8 readme pygments sphinx_rtd_theme'
 {% for env, config in tox_environments|dictsort %}{% if not config.cover %}
     - TESTENV: '{{ env }}-64'
       PYTHON_VERSION: '{{ config.python[-3:] }}'
+      PYTHON_HOME: C:\{{ config.python.replace('.', '') }}-x64
       MINICONDA_HOME: C:\Miniconda-x64
-      TESTSCRIPT: 'python -m pytest'
-
     - TESTENV: '{{ env }}-32'
       PYTHON_VERSION: '{{ config.python[-3:] }}'
+      PYTHON_HOME: C:\{{ config.python.replace('.', '') }}
       MINICONDA_HOME: C:\Miniconda
-      TESTSCRIPT: 'python -m pytest'
-
 {% endif %}{% endfor %}
 
 init:
@@ -43,21 +40,8 @@ install:
   - python setup.py install
 
 test_script:
-  - '%TESTSCRIPT%'
+  - '%PYTHON_HOME%\Scripts\tox'
 
-after_test:
-  - python setup.py sdist bdist_wheel
-
-deploy_script:
-  # If tagged commit, build/upload wheel
-  - IF "%APPVEYOR_REPO_TAG%"=="true" IF NOT "%TESTENV%"=="check" (
-      pip install twine &&
-      python setup.py register &&
-      twine upload -u %PYPI_USER% -p %PYPI_PASS% dist/*
-    )
-
-artifacts:
-  - path: dist\*
 
 ### To enable remote debugging uncomment this:
 #  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))

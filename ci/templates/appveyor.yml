@@ -6,7 +6,7 @@ environment:
     - TESTENV: 'check'
       PYTHON_VERSION: '3.7'
       MINICONDA_HOME: 'C:\Miniconda'
-      INSTALL_EXTRA_DEPS: 'pip install docutils check-manifest flake8 readme pygments sphinx_rtd_theme'
+      INSTALL_EXTRA_DEPS: 'pip install tox docutils check-manifest flake8 readme pygments sphinx_rtd_theme'
 {% for env, config in tox_environments|dictsort %}{% if not config.cover %}
     - TESTENV: '{{ env }}-64'
       PYTHON_VERSION: '{{ config.python[-3:] }}'

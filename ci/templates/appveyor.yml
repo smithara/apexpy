@@ -3,23 +3,23 @@ build: off
 configuration: Release
 environment:
   matrix:
-    - TESTENV: 'check'
+    - TOXENV: 'check'
       PYTHON_VERSION: '3.7'
       MINICONDA_HOME: 'C:\Miniconda'
-      INSTALL_EXTRA_DEPS: 'pip install tox docutils check-manifest flake8 readme pygments sphinx_rtd_theme'
+      INSTALL_EXTRA_DEPS: 'pip install docutils check-manifest flake8 readme pygments sphinx_rtd_theme'
 {% for env, config in tox_environments|dictsort %}{% if not config.cover %}
-    - TESTENV: '{{ env }}-64'
+    - TOXENV: '{{ env }}-64'
       PYTHON_VERSION: '{{ config.python[-3:] }}'
       PYTHON_HOME: C:\{{ config.python.replace('.', '') }}-x64
       MINICONDA_HOME: C:\Miniconda-x64
-    - TESTENV: '{{ env }}-32'
+    - TOXENV: '{{ env }}-32'
       PYTHON_VERSION: '{{ config.python[-3:] }}'
       PYTHON_HOME: C:\{{ config.python.replace('.', '') }}
       MINICONDA_HOME: C:\Miniconda
 {% endif %}{% endfor %}
 
 init:
-  - ps: echo $env:TESTENV
+  - ps: echo $env:TOXENV
 install:
   # This quickly fails the job if there is another pipeline queued ahead of it
   - ps: if ($env:APPVEYOR_PULL_REQUEST_NUMBER -and $env:APPVEYOR_BUILD_NUMBER -ne ((Invoke-RestMethod `
@@ -34,6 +34,7 @@ install:
   - '%MINICONDA_HOME%\Scripts\activate C:\pythontest'
   - '%MINICONDA_HOME%\Scripts\conda install -q -c msys2 m2w64-toolchain'
   - python -m pip install --upgrade pip
+  - pip install tox
   - '%INSTALL_EXTRA_DEPS%'
   - python setup.py config_fc
   - python setup.py config --compiler=mingw32 --fcompiler=gfortran

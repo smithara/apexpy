@@ -9,7 +9,11 @@ import sys
 if __name__ == "__main__":
     str_to_bool = {"false": False, "true": True}
 
-    base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    try:
+        base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    except NameError:
+        base_path = os.path.dirname(sys.path[0])
+    
     print("Project path: {0}".format(base_path))
 
     env_path = os.path.join(base_path, ".tox", "bootstrap")
@@ -31,7 +35,7 @@ if __name__ == "__main__":
                                "jinja2", "matrix"])
 
     activate = os.path.join(bin_path, "activate_this.py")
-    act_dict = {__file__: activate}
+    act_dict = {'__file__': activate}
 
     # tox requires activation with exec
     exec(compile(open(activate, "rb").read(), activate, "exec"), act_dict)

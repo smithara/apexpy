@@ -75,21 +75,22 @@ class TestCommandLine():
 
         return data
 
-    @pytest.mark.parametrize("date_str", [("2015"), ("201501"), ('20150101'),
-                                          ('20150101000000')])
+    @pytest.mark.parametrize("date_str", ["2015", "201501", '20150101',
+                                          '20150101000000'])
     def test_convert_w_datetime(self, date_str):
         """Test command line with different date and time specification."""
         # Build and execute the apexpy command line call
         cmd = ['python', '-m', 'apexpy', 'geo', 'apex', date_str, '--height',
                '300', '-i', self.infile, '-o', self.outfile]
         data = self.execute_command_line(cmd)
+        err_msg = 'error executing: {:s}'.format(' '.join(cmd))
 
         # Test the outfile existance and values
-        assert data is not None, 'error executing: {:s}'.format(' '.join(cmd))
+        assert data is not None, err_msg
         np.testing.assert_allclose(data, [[57.47145462, 93.62657928],
                                           [58.52458191, 94.03150177],
                                           [59.57331467, 94.46398163]],
-                                   rtol=1e-4)
+                                   rtol=1e-4, err_msg=err_msg)
         return
 
     def test_convert_single_line(self):
@@ -98,10 +99,12 @@ class TestCommandLine():
         cmd = ['python', '-m', 'apexpy', 'geo', 'apex', '20150101000000',
                '--height', '300', '-i', self.singlefile, '-o', self.outfile]
         data = self.execute_command_line(cmd)
+        err_msg = 'error executing: {:s}'.format(' '.join(cmd))
 
         # Test the outfile existance and values
-        assert data is not None, 'error executing: {:s}'.format(' '.join(cmd))
-        np.testing.assert_allclose(data, [57.47145462, 93.62657928], rtol=1e-4)
+        assert data is not None, err_msg
+        np.testing.assert_allclose(data, [57.47145462, 93.62657928], rtol=1e-4,
+                                   err_msg=err_msg)
         return
 
     @pytest.mark.parametrize("height, out_list",
@@ -114,10 +117,11 @@ class TestCommandLine():
                        '{:s}'.format(height)])
         cmd_kwargs = {'shell': True, 'stdout': subprocess.PIPE}
         stdout, _ = self.execute_command_line(cmd, cmd_kwargs, True)
+        err_msg = 'error executing: {:s}'.format(' '.join(cmd))
 
-        assert stdout is not None, 'error executing: {:s}'.format(' '.join(cmd))
+        assert stdout is not None, err_msg
         np.testing.assert_allclose(np.array(stdout.split(b' '), dtype=float),
-                                   out_list, rtol=1e-4)
+                                   out_list, rtol=1e-4, err_msg=err_msg)
         return
 
     def test_convert_mlt(self):
@@ -126,13 +130,15 @@ class TestCommandLine():
         cmd = ['python', '-m', 'apexpy', 'geo', 'mlt', '20150101000000',
                '--height', '300', '-i', self.singlefile, '-o', self.outfile]
         data = self.execute_command_line(cmd)
+        err_msg = 'error executing: {:s}'.format(' '.join(cmd))
 
         # Test the outfile existance and values
-        assert data is not None, 'error executing: {:s}'.format(' '.join(cmd))
-        np.testing.assert_allclose(data, [57.469547, 1.06324], rtol=1e-4)
+        assert data is not None, err_msg
+        np.testing.assert_allclose(data, [57.469547, 1.06324], rtol=1e-4,
+                                   err_msg=err_msg)
         return
 
-    @pytest.mark.parametrize("date_str", [("201501010"), ("2015010100000")])
+    @pytest.mark.parametrize("date_str", ["201501010", "2015010100000"])
     def test_invalid_date(self, date_str):
         """Test raises ValueError with an invalid input date."""
         # Build and execute the command
@@ -157,7 +163,7 @@ class TestCommandLine():
         assert b'ValueError' in stderr, 'invalid time error not raised'
         return
 
-    @pytest.mark.parametrize("coords", [("foobar apex"), ("geo foobar")])
+    @pytest.mark.parametrize("coords", ["foobar apex", "geo foobar"])
     def test_invalid_coord(self, coords):
         """Test raises error when bad coordinate input provided."""
         # Build and execute the command

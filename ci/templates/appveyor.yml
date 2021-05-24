@@ -40,7 +40,7 @@ install:
   - python setup.py install
 
 test_script:
-  - '%PYTHON_HOME%\Scripts\tox'
+  - python -m tox
 
 
 ### To enable remote debugging uncomment this:

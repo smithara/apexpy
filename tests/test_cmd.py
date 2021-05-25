@@ -64,7 +64,7 @@ class TestCommandLine():
 
         pipe = subprocess.Popen(command, **command_kwargs)
         out = pipe.communicate()
-        pipe.wait()
+        pipe.wait(timeout=300)
 
         if pipe_out:
             data = out

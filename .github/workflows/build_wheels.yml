@@ -29,7 +29,8 @@ jobs:
         env:
           # Disable building for PyPy and 32bit
           # Disable musllinux because very slow (300s+ vs 20s)
-          CIBW_SKIP: pp* *-win32 *_i686 *musllinux*
+          # Disable CPython3.6
+          CIBW_SKIP: pp* *-win32 *_i686 *musllinux* cp36*
           # Run the tests against the built package
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: pytest {package}/tests

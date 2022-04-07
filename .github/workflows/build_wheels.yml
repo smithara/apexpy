@@ -28,7 +28,11 @@ jobs:
         uses: pypa/cibuildwheel@v2.4.0     
         env:
           # Disable building for PyPy and 32bit
-          CIBW_SKIP: pp* *-win32 *-manylinux_i686
+          # Disable musllinux because very slow (300s+ vs 20s)
+          CIBW_SKIP: pp* *-win32 *_i686 *musllinux*
+          # Run the tests against the built package
+          CIBW_TEST_REQUIRES: pytest
+          CIBW_TEST_COMMAND: pytest {package}/tests
 
       - uses: actions/upload-artifact@v2
         with:

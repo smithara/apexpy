@@ -23,6 +23,13 @@ jobs:
           sudo ln -s /usr/local/Cellar/gcc@11/*/lib/gcc/11 /usr/local/gfortran/lib
           gfortran --version
 
+      - name: Provide gfortran (Windows)
+        if: runner.os == 'Windows'
+        uses: msys2/setup-msys2@v2
+        with:
+          install: >-
+            base-devel
+
       - uses: actions/checkout@v2
 
       - name: Build wheels
@@ -34,7 +41,9 @@ jobs:
           CIBW_SKIP: pp* *-win32 *_i686 *musllinux* cp36*
           # Run the tests against the built package
           CIBW_TEST_REQUIRES: pytest
-          CIBW_TEST_COMMAND: pytest {project}/tests
+          CIBW_TEST_COMMAND: python -c "import apexpy"
+#           CIBW_TEST_COMMAND: pytest {project}/tests
+          
 
       - uses: actions/upload-artifact@v2
         with:

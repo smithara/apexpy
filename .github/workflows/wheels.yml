@@ -19,7 +19,10 @@ jobs:
         env:
           # Disable building for PyPy, 32bit, musllinux
           CIBW_SKIP: pp* *-win32 *_i686 *musllinux*
+          # Select only these Python versons
+          CIBW_BUILD: cp310-*
           # Additional configuration for builds
+          CIBW_BUILD_FRONTEND: "build"
           CIBW_BEFORE_BUILD: pip install scipy
           # Run the tests against the built package
           CIBW_TEST_REQUIRES: pytest

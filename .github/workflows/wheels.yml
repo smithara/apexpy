@@ -19,6 +19,8 @@ jobs:
         env:
           # Disable building for PyPy, 32bit, musllinux
           CIBW_SKIP: pp* *-win32 *_i686 *musllinux*
+          # Additional configuration for builds
+          CIBW_BEFORE_BUILD: pip install scipy
           # Run the tests against the built package
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: python -c "import apexpy"

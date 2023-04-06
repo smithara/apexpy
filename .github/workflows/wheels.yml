@@ -19,11 +19,6 @@ jobs:
         env:
           # Disable building for PyPy, 32bit, musllinux
           CIBW_SKIP: pp* *-win32 *_i686 *musllinux*
-          # Try some alt config for windows...
-          CIBW_BEFORE_ALL_WINDOWS: >
-            choco install ninja mingw &&
-            choco install rtools --no-progress &&
-            echo "c:\rtools40\ucrt64\bin;" >> $env:GITHUB_PATH
           # Run the tests against the built package
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: python -c "import apexpy"

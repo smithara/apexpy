@@ -7,8 +7,8 @@ Contents
 
    readme
    installation
-   examples/index
-   reference/index
+   ex_index
+   api
    contributing
    maintenance
    authors

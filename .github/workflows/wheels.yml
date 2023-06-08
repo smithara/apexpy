@@ -22,7 +22,7 @@ jobs:
           # Select only these Python versons
           CIBW_BUILD: cp310-*
           # Additional configuration for builds
-          CIBW_BEFORE_ALL_MACOS: >
+          CIBW_ENVIRONMENT_MACOS: >
             FC=/usr/local/bin/gfortran-12 &&
             CC=/usr/local/bin/gcc-12
           CIBW_BEFORE_ALL_WINDOWS: > 

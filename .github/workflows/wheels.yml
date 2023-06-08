@@ -23,8 +23,7 @@ jobs:
           CIBW_BUILD: cp310-*
           # Additional configuration for builds
           CIBW_ENVIRONMENT_MACOS: >
-            FC=/usr/local/bin/gfortran-12 &&
-            CC=/usr/local/bin/gcc-12
+            FC=/usr/local/bin/gfortran-12 CC=/usr/local/bin/gcc-12
           CIBW_BEFORE_ALL_WINDOWS: > 
             choco install ninja mingw rtools --no-progress &&
             pacman -S mingw-w64-i686-meson mingw-w64-i686-pkg-config

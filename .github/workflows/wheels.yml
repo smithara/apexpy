@@ -26,7 +26,8 @@ jobs:
           CIBW_ENVIRONMENT_MACOS: >
             FC=/usr/local/bin/gfortran-12 CC=/usr/local/bin/gcc-12
           CIBW_ENVIRONMENT_WINDOWS: >
-            FC="C:\\mingw-w64\\bin\\gfortran.exe" CC="C:\\mingw-w64\\bin\\gcc.exe"
+            FC="C:\\ProgramData\\chocolatey\\lib\\mingw\\tools\\install\\mingw-w64\\bin\\gfortran.exe" &&
+            CC="C:\\ProgramData\\chocolatey\\lib\\mingw\\tools\\install\\mingw-w64\\bin\\gcc.exe"
           CIBW_BUILD_FRONTEND: "pip"
           # Run the tests against the built package
           CIBW_TEST_REQUIRES: pytest

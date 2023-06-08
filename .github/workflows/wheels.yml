@@ -20,7 +20,7 @@ jobs:
           # Disable building for PyPy, 32bit, musllinux
           CIBW_SKIP: pp* *-win32 *_i686 *musllinux*
           # Select only these Python versons
-          CIBW_BUILD: cp310-*
+          CIBW_BUILD: cp38-* cp39-* cp310-* cp311-*
           # Additional configuration for builds
           CIBW_ENVIRONMENT_MACOS: >
             FC=/usr/local/bin/gfortran-12 CC=/usr/local/bin/gcc-12

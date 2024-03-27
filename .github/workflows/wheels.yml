@@ -15,6 +15,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Build wheels
+        if: runner.os != 'Windows'
         uses: pypa/cibuildwheel@v2.16.2
         env:
           # Disable building for PyPy, 32bit, musllinux
@@ -24,8 +25,26 @@ jobs:
           # Additional configuration for builds
           CIBW_ENVIRONMENT_MACOS: >
             FC=/usr/local/bin/gfortran-12 CC=/usr/local/bin/gcc-12
-          CIBW_ENVIRONMENT_WINDOWS: >
-            PATH="C:\\ProgramData\\chocolatey\\lib\\mingw\\tools\\install\\mingw64\\bin;$PATH"
+          CIBW_BUILD_FRONTEND: "pip"
+          # Run the tests against the built package
+          CIBW_TEST_REQUIRES: pytest
+          CIBW_TEST_COMMAND: python -c "import apexpy"
+
+      - name: Setup Fortran (Windows)
+        if: runner.os == 'Windows'
+        uses: awvwgk/setup-fortran@main
+        id: setup-fortran
+        with:
+          compiler: gcc
+          version: 11
+      - name: Build wheels (Windows)
+        if: runner.os == 'Windows'
+        uses: pypa/cibuildwheel@v2.16.2
+        env:
+          CMAKE_GENERATOR: MinGW Makefiles
+          PIP_NO_CLEAN: "yes"
+          CIBW_BUILD_VERBOSITY: 3
+          CIBW_BUILD: cp38-* cp39-* cp310-* cp311-*
           CIBW_BUILD_FRONTEND: "pip"
           # Run the tests against the built package
           CIBW_TEST_REQUIRES: pytest

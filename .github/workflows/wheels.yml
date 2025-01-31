@@ -12,7 +12,7 @@ jobs:
         os: [ubuntu-22.04, windows-2022, macos-13]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Fortran
         uses: awvwgk/setup-fortran@main
@@ -22,12 +22,12 @@ jobs:
           version: 13
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.17.0
+        uses: pypa/cibuildwheel@v2.22.0
         env:
           # Disable building for PyPy, 32bit, musllinux
           CIBW_SKIP: pp* *-win32 *_i686 *musllinux*
           # Select only these Python versons
-          CIBW_BUILD: cp38-* cp39-* cp310-* cp311-*
+          CIBW_BUILD: cp310-* cp311-*
           # Additional configuration for builds
           CMAKE_GENERATOR: MinGW Makefiles
           CIBW_BUILD_FRONTEND: "pip"
@@ -35,6 +35,6 @@ jobs:
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: python -c "import apexpy"
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           path: ./wheelhouse/*.whl

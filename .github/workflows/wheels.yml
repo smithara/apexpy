@@ -43,8 +43,6 @@ jobs:
           CIBW_ARCHS_WINDOWS: "native"
           # Additional configuration for builds
           CIBW_BUILD_FRONTEND: "pip"
-          # Use standard CPython on Windows instead of NuGet
-          CIBW_CONFIG_SETTINGS_WINDOWS: "setup-args=-Dpython.platlibdir=Lib"
           # Environment per platform
           CIBW_ENVIRONMENT_LINUX: "CC=$CC FC=$FC"
           CIBW_ENVIRONMENT_WINDOWS: "CMAKE_GENERATOR=\"MinGW Makefiles\" CC=$CC FC=$FC"

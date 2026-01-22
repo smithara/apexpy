@@ -27,7 +27,7 @@ jobs:
           # Disable building for PyPy, 32bit, musllinux
           CIBW_SKIP: pp* *-win32 *_i686 *musllinux*
           # Select only these Python versons
-          CIBW_BUILD: cp310-* cp311-*
+          CIBW_BUILD: cp310-* cp311-* cp312-*
           # Additional configuration for builds
           CMAKE_GENERATOR: MinGW Makefiles
           CIBW_BUILD_FRONTEND: "pip"

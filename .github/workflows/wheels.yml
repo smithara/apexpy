@@ -1,4 +1,4 @@
-name: Build
+name: Build wheels
 
 on: [push, pull_request, workflow_dispatch]
 
@@ -14,7 +14,7 @@ jobs:
             gcc_version: 15
           - os: macos-15-intel    # Intel native
             gcc_version: 15
-          - os: windows-2022
+          - os: windows-2025
             gcc_version: 15
           - os: ubuntu-24.04
             gcc_version: 14

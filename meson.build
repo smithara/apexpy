@@ -128,7 +128,7 @@ if is_windows
     # does not have the same name for all installs.  This is the one
     # for Windows on GitHub actions
     incdir_py = run_command(py3,
-      ['-c', 'import os; os.chdir(".."); import sys; print(os.path.join(sys.prefix, "include"))'],
+      ['-c', 'import os; os.chdir(".."); import sysconfig; print(sysconfig.get_path("include"))'],
       check : true).stdout().strip()
     inc_dirs = include_directories(incdir_numpy, incdir_f2py, incdir_py)
   endif

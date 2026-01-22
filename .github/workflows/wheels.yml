@@ -44,13 +44,11 @@ jobs:
           # Additional configuration for builds
           CIBW_BUILD_FRONTEND: "pip"
           # Environment per platform
-          CIBW_ENVIRONMENT_LINUX: "CC=$CC FC=$FC"
-          CIBW_ENVIRONMENT_WINDOWS: "CMAKE_GENERATOR=\"MinGW Makefiles\" CC=$CC FC=$FC"
-          CIBW_ENVIRONMENT_MACOS: "CC=$CC FC=$FC MACOSX_DEPLOYMENT_TARGET=15.0"
+          CIBW_ENVIRONMENT_MACOS: "MACOSX_DEPLOYMENT_TARGET=15.0"
           # Run the tests against the built package
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_EXTRAS: test
-          CIBW_TEST_COMMAND: pytest {project}/tests
+          CIBW_TEST_COMMAND: pytest {project}/apexpy/tests
 
       - uses: actions/upload-artifact@v4
         with:

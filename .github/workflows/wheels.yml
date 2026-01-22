@@ -45,7 +45,7 @@ jobs:
           CIBW_CONFIG_SETTINGS_WINDOWS: "setup-args=-Dpython.platlibdir=Lib"
           # Environment per platform
           CIBW_ENVIRONMENT_LINUX: "CC=$CC FC=$FC"
-          CIBW_ENVIRONMENT_WINDOWS: "CMAKE_GENERATOR=MinGW Makefiles CC=$CC FC=$FC"
+          CIBW_ENVIRONMENT_WINDOWS: "CMAKE_GENERATOR=\"MinGW Makefiles\" CC=$CC FC=$FC"
           CIBW_ENVIRONMENT_MACOS: "CC=$CC FC=$FC MACOSX_DEPLOYMENT_TARGET=15.0"
           # Run the tests against the built package
           CIBW_TEST_REQUIRES: pytest

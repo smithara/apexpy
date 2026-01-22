@@ -9,7 +9,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-24.04, windows-2025, macos-15, macos-15-intel]
+        include:
+          - os: macos-15
+            gcc_version: 15
+          - os: windows-2025
+            gcc_version: 15
+          - os: ubuntu-24.04
+            gcc_version: 13
 
     steps:
       - uses: actions/checkout@v4
@@ -20,24 +26,33 @@ jobs:
         id: setup-fortran
         with:
           compiler: gcc
-          version: ${{ matrix.os == 'ubuntu-24.04' && '13' || '15' }}
+          version: ${{ matrix.gcc_version }}
 
       - name: Build wheels
         # https://github.com/pypa/cibuildwheel
         uses: pypa/cibuildwheel@v3.3.1
         env:
-          # Disable building for PyPy, 32bit, musllinux
-          CIBW_SKIP: pp* *-win32 *_i686 *musllinux*
           # Select only these Python versons
           CIBW_BUILD: cp310-* cp311-* cp312-* cp313-* cp314-*
+          # ...on these platforms
+          CIBW_SKIP: "*-musllinux_*"
+          CIBW_ARCHS_MACOS: "arm64 x86_64"
+          CIBW_ARCHS_LINUX: "x86_64"
+          CIBW_ARCHS_WINDOWS: "AMD64"
           # Additional configuration for builds
-          CMAKE_GENERATOR: MinGW Makefiles
           CIBW_BUILD_FRONTEND: "pip"
-          CIBW_ENVIRONMENT: CC=$CC FC=$FC
+          # Use standard CPython on Windows instead of NuGet
+          CIBW_CONFIG_SETTINGS_WINDOWS: "setup-args=-Dpython.platlibdir=Lib"
+          # Environment per platform
+          CIBW_ENVIRONMENT_LINUX: "CC=$CC FC=$FC"
+          CIBW_ENVIRONMENT_WINDOWS: "CMAKE_GENERATOR=MinGW Makefiles CC=$CC FC=$FC"
+          CIBW_ENVIRONMENT_MACOS: "CC=$CC FC=$FC MACOSX_DEPLOYMENT_TARGET=15.0"
           # Run the tests against the built package
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: python -c "import apexpy"
 
       - uses: actions/upload-artifact@v4
         with:
+          name: wheels-${{ matrix.os }}
           path: ./wheelhouse/*.whl
+          if-no-files-found: error

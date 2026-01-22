@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Setup Fortran
-        uses: fortran-lang/setup-fortran@v3.3.1
+        uses: fortran-lang/setup-fortran@v1.8.1
         id: setup-fortran
         with:
           compiler: gcc

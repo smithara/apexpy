@@ -49,7 +49,8 @@ jobs:
           CIBW_ENVIRONMENT_MACOS: "CC=$CC FC=$FC MACOSX_DEPLOYMENT_TARGET=15.0"
           # Run the tests against the built package
           CIBW_TEST_REQUIRES: pytest
-          CIBW_TEST_COMMAND: python -c "import apexpy"
+          CIBW_TEST_EXTRAS: test
+          CIBW_TEST_COMMAND: pytest {project}/tests
 
       - uses: actions/upload-artifact@v4
         with:

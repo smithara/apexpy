@@ -10,7 +10,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: macos-15
+          - os: macos-15          # ARM native
+            gcc_version: 15
+          - os: macos-15-intel    # Intel native
             gcc_version: 15
           - os: windows-2025
             gcc_version: 15
@@ -36,9 +38,9 @@ jobs:
           CIBW_BUILD: cp310-* cp311-* cp312-* cp313-* cp314-*
           # ...on these platforms
           CIBW_SKIP: "*-musllinux_*"
-          CIBW_ARCHS_MACOS: "arm64 x86_64"
-          CIBW_ARCHS_LINUX: "x86_64"
-          CIBW_ARCHS_WINDOWS: "AMD64"
+          CIBW_ARCHS_MACOS: "native"
+          CIBW_ARCHS_LINUX: "native"
+          CIBW_ARCHS_WINDOWS: "native"
           # Additional configuration for builds
           CIBW_BUILD_FRONTEND: "pip"
           # Use standard CPython on Windows instead of NuGet
